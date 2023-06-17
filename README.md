@@ -6,7 +6,7 @@ You see, Dangerous Dave was a platformer - it had 10 levels, with each one your 
 Some of these levels had `Warp Zones` which are "secret levels", and you get to them by going out-of-bounds.  
 Being an inquisitive young boy, I tried to find all warp zones, and I accidently found an unexpected one in level 6, which caused an unexpected behavior.  
 Here is a video recording of that:
-![OOBR](https://github.com/yo-yo-yo-jbo/dangerous_dave/assets/30564634/6cdda6ad-1eb7-4482-9020-5c0cb25c2a33)
+<video src='https://github.com/yo-yo-yo-jbo/dangerous_dave/assets/30564634/6cdda6ad-1eb7-4482-9020-5c0cb25c2a33' width=180/>
 
 The idea of level 6 was to go right, take the trophy and touch the door, however, *the door is treated as empty space if you still do not have the trophy*.  
 I believe this was an obvious [out-of-bounds-read](https://cwe.mitre.org/data/definitions/125.html), but as a kid I never investigated it further.  
