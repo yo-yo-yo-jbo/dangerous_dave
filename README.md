@@ -5,7 +5,7 @@ Well, one of the most remembered games from that era is [https://en.wikipedia.or
 You see, Dangerous Dave was a platformer - it had 10 levels, with each one your goal is to get to a trophy and pass through a door.  
 Some of these levels had `Warp Zones` which are "secret levels", and you get to them by going out-of-bounds.  
 Being an inquisitive young boy, I tried to find all warp zones, and I accidently found an unexpected one in level 6, which caused an unexpected behavior.  
-Here is a video recording of that:  
+You can click the link to watch a video recording of that:  
 
 [![Dangerous Dave Out-Of-Bounds Read](http://img.youtube.com/vi/95tPM7GGAeI/0.jpg)](http://www.youtube.com/watch?v=95tPM7GGAeI "Dave OOBR")
 
@@ -19,3 +19,28 @@ The game comes packed in one file only - `DAVE.EXE` (sha1 = `b0e70846c31d651b53c
 I was hoping to see many strings, but didn't see any. Opening it in IDA revealed it might be packed... I noticed it resolves some interrupt handlers from the interrupt handler table and even hooks the "divide by zero" handler (I talked about the subject [in the past](https://github.com/yo-yo-yo-jbo/mbr_analysis/).  
 It was later clear to me the code was compressed, and while I could have worked my way through it, I decided to search online.  
 That led me to a thriving modding community - [shikadi.net](https://moddingwiki.shikadi.net/wiki/Dangerous_Dave) (if you don't know what a "Shikadi" is, you should play more [Commander Keen](https://en.wikipedia.org/wiki/Commander_Keen)). They had very complete records of the file format(s) and even a link to one Ghidra project file with some important notes. I can honestly say it saved me tons of work, and that's an important lesson too - it's cheaper to search online rather than embark on heavy reverse-engineering on your own.  
+One of the first things I discovered was the file is [LZW-compressed](https://moddingwiki.shikadi.net/wiki/UNLZEXE), and luckily the community has a tool to decompress the executable:
+
+```shell
+UNLZEXE.EXE DAVE.EXE
+```
+This makes the file 172848 bytes long - more than double in size!
+
+## File format and level information
+The next part was to examine the file format and the level information.  
+As before, the modding community left very [complete notes](https://moddingwiki.shikadi.net/wiki/Dangerous_Dave) with offsets in the file of where certain things are, including tilesets, level information and so on.  
+While I was mostly interested in the level information, I wanted to examine the tile data - level data references tile numbers.  
+Luckily, a modder called [MaiZure](https://www.maizure.org/projects/index.html) had a project that was kind of easy to compile and run to extract the tile information - thank you so much for that!
+
+
+
+
+
+
+
+
+
+
+
+
+
