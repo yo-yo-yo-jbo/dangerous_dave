@@ -55,7 +55,7 @@ The data for `warp zones` is saved in a different offset in the file, alongside 
 
 The `horizontal shift` works with the `starting X coordinate` to position Dave at the right position in the `warp zone.`  
 It's interesting to note that there are only `4 warp zones` - in levels `5`, `8`, `9` and `10`. All other levels have all those other values as `0`.  
-At that point I wanted to take a better look and coded my own parser, which I uploaded to this repository.  
+At that point I wanted to take a better look and coded my own parser, which I uploaded to this repository as [dave_parse.py].  
 It expects the unpacked `DAVE.EXE` and parses it. I believe I found some slight errors in the modding community descriptions, but I was able to work around them.  
 
 ```shell
@@ -80,6 +80,7 @@ Loaded 11 levels.
 Choose a level to view (zero-based) or 'Q' to quit: q
 Quitting.
 ```
+
 
 
 
