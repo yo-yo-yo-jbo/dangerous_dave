@@ -53,8 +53,33 @@ The data for `warp zones` is saved in a different offset in the file, alongside 
 3. `Starting X coordinate` for each warp level is saved in an array of `10` elements.
 4. `Horizontal shift` for each level is saved in an array of `10` elements.
 
-The horizontal shift 
+The `horizontal shift` works with the `starting X coordinate` to position Dave at the right position in the `warp zone.`  
+It's interesting to note that there are only `4 warp zones` - in levels `5`, `8`, `9` and `10`. All other levels have all those other values as `0`.  
+At that point I wanted to take a better look and coded my own parser, which I uploaded to this repository.  
+It expects the unpacked `DAVE.EXE` and parses it. I believe I found some slight errors in the modding community descriptions, but I was able to work around them.  
 
+```shell
+Level 8 (start at (2, 8) stationary):
+
+ZYYYYYYYYYYYYYXYYYYYYYYYYYYYYYYYXW  WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+Z             X  V            U X          T  T      S    S            V         R                WW
+Z            QX      YY         X                                                           PON  MWW
+Z W    WYYYLYYXK  LY    Y     Y WWWWWWWWW        WWW   S    S       J         J             IOH WWWW
+Z             X            Y            WWWWGGWWWWFFFFFFFFFFES                               D   CWW
+Z    W   W    X                   V        WWWWFFFB     AFFFFES JJJJJJ       JJJJJJJ         D    WW
+Z       z     XV    FFF  Y    Y  FFFV                    yFxUFS         V                    D    WW
+Z  W    F     F   FFB              FF V V                 F  FFFF     W     W        T   W   D    WW
+Zwzzz zzzz   zzz zFF                FFFFFV V V    S     UFFF                                 D   WWW
+ZZZZZGZZZZGGGZZZGZZZvvvvvvvvvvvvvv  vFFFFFFFFFFFFFFFFFFFFFFFFFWWWWvvvvvWWWWWvvvvvWWWWWWvvvvvWWWWWWWW
+
+Warp zone starts at (71, 0) while falling.
+
+
+
+Loaded 11 levels.
+Choose a level to view (zero-based) or 'Q' to quit: q
+Quitting.
+```
 
 
 
