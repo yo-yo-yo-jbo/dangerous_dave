@@ -30,7 +30,8 @@ This makes the file 172848 bytes long - more than double in size!
 The next part was to examine the file format and the level information.  
 As before, the modding community left very [complete notes](https://moddingwiki.shikadi.net/wiki/Dangerous_Dave) with offsets in the file of where certain things are, including tilesets, level information and so on.  
 While I was mostly interested in the level information, I wanted to examine the tile data - level data references tile numbers.  
-Luckily, a modder called [MaiZure](https://www.maizure.org/projects/index.html) had a project that was kind of easy to compile and run to extract the tile information - thank you so much for that!
+Luckily, a modder called [MaiZure](https://www.maizure.org/projects/index.html) had a project that was kind of easy to compile and run to extract the tile information - thank you so much for that!  
+While the tools MaiZure built are great, I ended up building my own parser in Python, which adds a few missing pieces.
 
 ![Tilemap](map.bmp)
 
@@ -43,7 +44,16 @@ The normal levels appear in an array of `1280 bytes` per element, each containin
 2. Tiles (`1000 bytes`) - the `100x10` level information, each byte references a tile.
 3. Padding (`24 bytes`) - unused.
 
+There is another place where the initial state for each level is saved (again in a `10`-element array), which includes the `starting X position`, `starting Y position` and the `initial motion` (which can be `stationary` or `falling`).
 
+It's interesting to see that levels contain the `warp zones` in them, they are not special levels at all!  
+The data for `warp zones` is saved in a different offset in the file, alongside two global variables that are shared for all warp zones:
+1. `The starting Y position for warp zones` is global. That makes sense since all warp zones display an animation of Dave falling in a some sort of "tube".
+2. `The motion flags for warp zones` is global. That motion flag has realistically two options: falling and stationary. Since Dave is falling in warp zones, it's a global variable.
+3. `Starting X coordinate` for each warp level is saved in an array of `10` elements.
+4. `Horizontal shift` for each level is saved in an array of `10` elements.
+
+The horizontal shift 
 
 
 
