@@ -26,13 +26,22 @@ UNLZEXE.EXE DAVE.EXE
 ```
 This makes the file 172848 bytes long - more than double in size!
 
-## File format and level information
+## File format and tilemap
 The next part was to examine the file format and the level information.  
 As before, the modding community left very [complete notes](https://moddingwiki.shikadi.net/wiki/Dangerous_Dave) with offsets in the file of where certain things are, including tilesets, level information and so on.  
 While I was mostly interested in the level information, I wanted to examine the tile data - level data references tile numbers.  
 Luckily, a modder called [MaiZure](https://www.maizure.org/projects/index.html) had a project that was kind of easy to compile and run to extract the tile information - thank you so much for that!
 
+![Tilemap](map.bmp)
 
+With greater confidence, I approached the format of the levels, which was the most interesting to me.
+
+## Level formats
+The level format is described well in the modding wiki. There are `10` levels - each one is `100x10` tiles. Additionally, there is one special level with only tile information, which represents the tiles that appear in the opening screen (it's `10x7` tiles).  
+The normal levels appear in an array of `1280 bytes` per element, each containing:
+1. Path data (`256 bytes`) - data about paths that monsters can take. While interesting, not relevant to our scope.
+2. Tiles (`1000 bytes`) - the `100x10` level information, each byte references a tile.
+3. Padding (`24 bytes`) - unused.
 
 
 
