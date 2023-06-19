@@ -141,11 +141,29 @@ But most importantly, it gave me the function that runs when a level is complete
 At this point I decided to validate all these learnings. While it was my first time of using [the DosBox debugger](https://www.dosbox.com), I must say it was very intuitive and surprisigly efficient!
 ![DosBox debugger](debugger.png)  
 
-From that point reverse-engineering became easier - I had to look for *assignments* to `word_6152` (the level backup). That should happen when moving to warp zones, and indeed:
+From that point reverse-engineering became easier - I had to look for *assignments* to `word_6152` (the level backup). That should happen when moving to warp zones, and luckily there was only one such writing reference:
 
 ```c
+g_curr_warp_zone_mapping = g_current_level;
+var2 = *(word *)(g_current_level * 2 + 0x192);
+var3 = *(word *)(g_current_level * 2 + 0x1a6);
+g_current_level = *(int *)(g_current_level * 2 + 0x16a) - 1;
+sub_14C69();
+g_start_y = 0x10;
 ```
 
+- Here we can see how the current level is backed-up for coming back from the warp zone.
+- The current level number is mapped from `0x16A + (2*current_level)-1`.
+- Perhaps not surprisingly, `g_start_y = 0x10` is the constant they mention at the modding community for the warp zone starting Y position. When I originally read the description, I assumed this was in a data segment, but it's just a constant baked into the code (probably originally in a `#define`).
+
+The calculation for loading the current level is loaded from address `0x2583a` (plus twice the current level, minus one). Indeed we can see this easily:
+
+```python
+import struct
+struct.unpack('<10H', open('DAVE.EXE', 'rb').read()[0x2583a:0x2583a+20])
+```
+
+This yields `(0, 0, 0, 0, 2, 0, 0, 6, 7, 1)` - we can clearly see the warp zones at 1-based indexes 5, 8, 9 and 10. Success!
 
 
 
