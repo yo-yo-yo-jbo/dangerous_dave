@@ -138,9 +138,13 @@ But most importantly, it gave me the function that runs when a level is complete
 - Following the code flow a bit, `word_573C` seems to maintain whether we're in a warp zone or not!
 - Note that if we just finished a warp zone (`word_573C == 1`) then the current level is restored - `word_56F4 = word_6152`. This means `word_6152` saves the level Dave should warp back into. That makes sense because after level 5, for instance, Dave warps to the warp zone at level 2, so level 5 is going to be saved in that memory address.
 
-  
+At this point I decided to validate all these learnings. While it was my first time of using [the DosBox debugger](https://www.dosbox.com), I must say it was very intuitive and surprisigly efficient!
+![DosBox debugger](debugger.png)  
 
+From that point reverse-engineering became easier - I had to look for *assignments* to `word_6152` (the level backup). That should happen when moving to warp zones, and indeed:
 
+```c
+```
 
 
 
