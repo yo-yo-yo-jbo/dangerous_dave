@@ -165,6 +165,8 @@ struct.unpack('<10H', open('DAVE.EXE', 'rb').read()[0x2583a:0x2583a+20])
 
 This yields `(0, 0, 0, 0, 2, 0, 0, 6, 7, 1)` - we can clearly see the warp zones at 1-based indexes 5, 8, 9 and 10. Success!
 
-
-
+## Level 6
+When level `5`, for example, is loaded, `2` is returned, and the tiles from that level are processed, which are really element `1` in the 0-based levels array.  
+Thanks to the modding community, we already know the tiles start at offset `0x26E0A` (with each element being `0x500` bytes long).  
+Well, let's imagine what happens to level `6`... The returned number is `0`, which will be index `-1`...
 
