@@ -50,9 +50,9 @@ The normal levels appear in an array of `1280 bytes` per element, each containin
 There is another place where the initial state for each level is saved (again in a `10`-element array), which includes the `starting X position`, `starting Y position` and the `initial motion` (which can be `stationary` or `falling`).
 
 It's interesting to see that levels contain the `warp zones` tiles in them, they are not special levels at all!  
-The metadata for `warp zones` is saved in a different offset in the file, alongside two global variables that are shared for all warp zones:
-1. `The starting Y position for warp zones` is global. That makes sense since all warp zones display an animation of Dave falling in a some sort of "tube".
-2. `The motion flags for warp zones` is global. That motion flag has realistically two options: `falling` and `stationary`. Since Dave is `falling` in all warp zones, it's a global variable.
+The metadata for `warp zones` is saved in a different offset in the file, alongside two constants that are shared for all warp zones:
+1. `The starting Y position for warp zones` is constant. That makes sense since all warp zones display an animation of Dave falling in a some sort of "tube".
+2. `The motion flags for warp zones` is constant. That motion flag has realistically two options: `falling` and `stationary`. Since Dave is `falling` in all warp zones, it's a global variable.
 3. `Starting X coordinate` for each warp level is saved in an array of `10` elements.
 4. `Horizontal shift` for each level is saved in an array of `10` elements.
 
