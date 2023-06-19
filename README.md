@@ -86,8 +86,59 @@ Quitting.
 ```
 
 ## Transitioning to warp levels
+Figuring out the current level was pretty easy. I was looking at the strings and found the following:
 
+```
+         congratulations!
+you made it through all the peril-
+ous areas in clyde's hideout!
+very good work! did you find
+the 4 warp zones? they are located
+on levels 5,8,9 and 10. just jump
+off the top of the screen at the
+extreme left or right edge of the
+world and voila! you're there!
+```
 
+Looking at references for those strings in IDA was easy too after some minor prettifying:
+```c
+PresentFreeText("         congratulations!");
+PresentFreeText("you made it through all the peril-");
+PresentFreeText("ous areas in clyde's hideout!");
+PresentFreeText("very good work! did you find");
+PresentFreeText("the 4 warp zones? they are located");
+PresentFreeText("on levels 5,8,9 and 10. just jump");
+PresentFreeText("off the top of the screen at the");
+PresentFreeText("extreme left or right edge of the");
+PresentFreeText("world and voila! you're there!");
+```
+
+Of course, this is a further testament that level 6 should not have a warp zone...  
+But most importantly, it gave me the function that runs when a level is completed. Quickly I found this:
+
+```c
+    sub_1749B();
+    word_56F4 = word_56F4 + 1;
+    sub_10BFB();
+    if (word_573C == 1) {
+      word_573C = 0;
+      word_56F4 = word_6152;
+    }
+    if ((int)word_56F4 < 10) {
+      sub_10BFB();
+      sub_14C69();
+      sub_17631();
+      sub_18CDA();
+      sub_14B9C();
+      sub_13235();
+    }
+```
+
+- The comparison to `10` and its increament clearly indicated that `word_56F4` is the current level number.
+- Following the code flow a bit, `word_573C` seems to maintain whether we're in a warp zone or not!
+- Note that if we just finished a warp zone (`word_573C == 1`) then the current level is restored - `word_56F4 = word_6152`. This means `word_6152` saves the level Dave should warp back into. That makes sense because after level 5, for instance, Dave warps to the warp zone at level 2, so level 5 is going to be saved in that memory address.
+
+  
 
 
 
