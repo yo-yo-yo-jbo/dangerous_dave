@@ -220,6 +220,9 @@ XXXXXXXXXXXXXXXXX####WWWWW#####WWWWW######WWWWW########?M_ ? ?T? ??? Xg]??M| W W
 See all the `?` symbols? Those are out-of-bounds tiles (which explains the weird buggy-looking tiles at the bottom of that level).
 
 ## Summary
+Of course that after all of that I had to add some funny changes, my parser is also capable of editing levels and text:
+![Modified](dave_hax.png)
+
 This has been an unusual weekend project for me, I am very grateful for the [shikadi.net](https://moddingwiki.shikadi.net/wiki/Dangerous_Dave) modding community.  
 Even though this kind of reverse-engineering is less and less common in real world scenario, I still think it's interesting.  
 I appreciate old DOS games and how they cleverly implemented games in so little disk storage space and memory space - I see that as a lost art!
