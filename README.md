@@ -81,9 +81,10 @@ Loaded 11 levels.
 Choose a level to view (zero-based) or 'Q' to quit: q
 Quitting.
 ```
+(yes, that thing on the right is a tree)
 
 ## Transitioning to warp levels
-Figuring out the current level was pretty easy. I was looking at the strings and found the following:
+Figuring out the variable that maintains the current level number was pretty easy. I was looking at the strings and found the following:
 
 ```
          congratulations!
@@ -110,7 +111,7 @@ PresentFreeText("extreme left or right edge of the");
 PresentFreeText("world and voila! you're there!");
 ```
 
-Of course, this is a further testament that level 6 should not have a warp zone...  
+Of course, this is a further testament that level 6 should not have a `warp zone`...  
 But most importantly, it gave me the function that runs when a level is completed. Quickly I found this:
 
 ```c
