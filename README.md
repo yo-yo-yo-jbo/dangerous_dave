@@ -11,8 +11,8 @@ You can click the link to watch a video recording of that:
 
 The idea of level 6 was to go right, take the trophy and touch the door, however, *the door is treated as empty space if you still do not have the trophy*.  
 I believe this was an obvious [out-of-bounds-read](https://cwe.mitre.org/data/definitions/125.html), but as a kid I never investigated it further.  
-MANY years went by, until finally I had some spare time to try and understand what happens there.  
-This led me to an interesting rabbit hole that I'd like to share today!
+MANY years went by, until I finally found some spare time to try and understand what happens there.  
+That led me to an interesting rabbit hole that I'd like to share today!
 
 ## LZEXE
 The game comes packed in one file only - `DAVE.EXE` (sha1 = `b0e70846c31d651b53c2f5490f516d8fd4844ed7`), its size is merely 76597 bytes!  
