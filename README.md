@@ -222,4 +222,5 @@ Even though this kind of reverse-engineering is less and less common in real wor
 I appreciate old DOS games and how they cleverly implemented games in so little disk storage space and memory space - I see that as a lost art!
 
 Thank you,
+
 Jonathan Bar Or
