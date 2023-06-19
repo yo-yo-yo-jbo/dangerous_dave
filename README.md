@@ -1,4 +1,4 @@
-# A very dangerous Dave
+# A very Dangerous Dave
 This is an unusual blogpost about a bug (vulnerability?) that has been bothering me for years.  
 When I was a kid I used to play tons of old DOS games. [Commander Keen](https://en.wikipedia.org/wiki/Commander_Keen)? With pleasure! [SkyRoads](https://en.wikipedia.org/wiki/SkyRoads_(video_game))? I remember most stages by heart. [AlleyCat](https://en.wikipedia.org/wiki/Alley_Cat_(video_game))? Oh yes!  
 Well, one of the most remembered games from that era is [Dangerous Dave](https://en.wikipedia.org/wiki/Dangerous_Dave).  
