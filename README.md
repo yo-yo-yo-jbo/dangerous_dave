@@ -58,7 +58,7 @@ It's interesting to note that there are only `4 warp zones` - in levels `5`, `8`
 At that point I wanted to take a better look and coded my own parser, which I uploaded to this repository.
 It expects the unpacked `DAVE.EXE` and parses it. I believe I found some slight errors in the modding community descriptions (for example, the `warp zone` X coordinate is in tiles and the horizontal shift is in pixels), but I was able to work around them.  
 
-```shell
+```
 ./dave_parse.py
 
 ...
