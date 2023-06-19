@@ -65,19 +65,16 @@ It expects the unpacked `DAVE.EXE` and parses it. I believe I found some slight 
 
 Level 8 (start at (2, 8) stationary):
 
-ZYYYYYYYYYYYYYXYYYYYYYYYYYYYYYYYXW  WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-Z             X  V            U X          T  T      S    S            V         R                WW
-Z            QX      YY         X                                                           PON  MWW
-Z W    WYYYLYYXK  LY    Y     Y WWWWWWWWW        WWW   S    S       J         J             IOH WWWW
-Z             X            Y            WWWWGGWWWWFFFFFFFFFFES                               D   CWW
-Z    W   W    X                   V        WWWWFFFB     AFFFFES JJJJJJ       JJJJJJJ         D    WW
-Z       z     XV    FFF  Y    Y  FFFV                    yFxUFS         V                    D    WW
-Z  W    F     F   FFB              FF V V                 F  FFFF     W     W        T   W   D    WW
-Zwzzz zzzz   zzz zFF                FFFFFV V V    S     UFFF                                 D   WWW
-ZZZZZGZZZZGGGZZZGZZZvvvvvvvvvvvvvv  vFFFFFFFFFFFFFFFFFFFFFFFFFWWWWvvvvvWWWWWvvvvvWWWWWWvvvvvWWWWWWWW
-
-Warp zone starts at (71, 0) while falling.
-
+X-------------|-----------------|#  ################################################################
+X             |  *            J |          $  $      W    W            *         T                ##
+X            Q|      --         |                                                           OOO  ###
+X #    #------|G  --    -     - #########        ###   W    W       =         =             OOO ####
+X             |            -            ####oo####XXXXXXXXXX\W                               |   $##
+X    #   #    |                   *        ####XXX/     \XXXX\W ======       =======         |    ##
+X       _     |*    XXX  -    -  XXX*                    MX&JXW         *                    |    ##
+X  #    X     X   XX/              XX * *                 X  XXXX     #     #        $   #   |    ##
+X>___ ____   ___ _XX                XXXXX* * *    W     JXXX                                 |   ###
+XXXXXoXXXXoooXXXoXXXWWWWWWWWWWWWWW  WXXXXXXXXXXXXXXXXXXXXXXXXX####WWWWW#####WWWWW######WWWWW########
 
 
 Loaded 11 levels.
