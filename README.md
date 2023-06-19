@@ -9,6 +9,9 @@ You can click the link to watch a video recording of that:
 
 [![Dangerous Dave Out-Of-Bounds Read](http://img.youtube.com/vi/95tPM7GGAeI/0.jpg)](http://www.youtube.com/watch?v=95tPM7GGAeI "Dave OOBR")
 
+The end result looks like a complete mess:
+![BUG](dave_bug.png)
+
 The idea of level 6 was to go right, take the trophy, head back and touch the door, however, *the door is treated as empty space if you still do not have the trophy*.  
 I believe this was an obvious [out-of-bounds-read](https://cwe.mitre.org/data/definitions/125.html), but as a kid I never investigated it further.  
 MANY years went by, until I finally found some spare time to try and understand what happens there.  
