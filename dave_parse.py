@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 import struct
-import binascii
 import os
 
 # Fine-tunables
@@ -12,17 +11,23 @@ SPECIAL_LEVEL_OFFSET = 0x25EA4
 SPECIAL_LEVEL_SIZE = 70
 BUGGY_LEVEL_OFFSET = 0x2932B
 BUGGY_LEVEL_SIZE = 0x500
+BUGGY_LEVEL_ID = 6
 WARP_ZONE_LEVELS_DATA_OFFSET = 0x25862
 WARP_ZONE_START_Y_OFFSET = 0x1710
 WARP_ZONE_MOTION_FLAGS_OFFSET = 0x1716
 WARP_ZONE_LEVEL_MAPPING_OFFSET = 0x2583a
 MOTION_FLAG_MAPPINGS = { 0x24: 'stationary', 0x28: 'falling' }
 PIXELS_PER_TILE = 16
+FILENAME = 'DAVE.EXE'
+TITLE_OFFSET = 0x2643F
+TITLE_SIZE = 14
+SUBTITLE_OFFSET = 0x26451
+SUBTITLE_SIZE = 23
 
 # Tile mappings
 TILES = [('empty', ' '),
          ('crack1', 'X'),
-         ('door', '#'),
+         ('door', 'G'),
          ('girder_block', '='),
          ('jetpack', 'J'),
          ('bluewall', '#'),
@@ -271,7 +276,7 @@ class Level(object):
         """
 
         # Start with the special level
-        levels = [ Level(bin_bytes[SPECIAL_LEVEL_OFFSET:SPECIAL_LEVEL_OFFSET + SPECIAL_LEVEL_SIZE], 'Intro screen') ]
+        levels = [ Level(bin_bytes[SPECIAL_LEVEL_OFFSET:SPECIAL_LEVEL_OFFSET + SPECIAL_LEVEL_SIZE], 'Intro screen', SPECIAL_LEVEL_OFFSET) ]
 
         # Parse initial state for all normal levels
         init_states_fmt = '<%dB%dH%dH' % (NORMAL_LEVELS_NUM, NORMAL_LEVELS_NUM, NORMAL_LEVELS_NUM)
@@ -284,10 +289,10 @@ class Level(object):
         for i in range(NORMAL_LEVELS_NUM):
             data = bin_bytes[NORMAL_LEVELS_OFFSET + (NORMAL_LEVELS_SIZE*i):NORMAL_LEVELS_OFFSET + NORMAL_LEVELS_SIZE*(i+1)]
             init_motion, startx, starty = init_states[i], pixel_to_tile_coord_x(init_states[NORMAL_LEVELS_NUM + i]), pixel_to_tile_coord_y(init_states[2*NORMAL_LEVELS_NUM + i])
-            levels.append(Level(data, 'Level %d' % (i+1,), startx, starty, MOTION_FLAG_MAPPINGS[init_motion], warp_zones[i]))
+            levels.append(Level(data, 'Level %d' % (i+1,), NORMAL_LEVELS_OFFSET + (NORMAL_LEVELS_SIZE*i), startx, starty, MOTION_FLAG_MAPPINGS[init_motion], warp_zones[i]))
 
-        # Parse the buggy level
-        levels.append(Level(bin_bytes[BUGGY_LEVEL_OFFSET:BUGGY_LEVEL_OFFSET + BUGGY_LEVEL_SIZE], 'Buggy warp level'))
+        # Parse the buggy warp zone level
+        levels.append(Level(bin_bytes[BUGGY_LEVEL_OFFSET:BUGGY_LEVEL_OFFSET + BUGGY_LEVEL_SIZE], 'Buggy warp level', BUGGY_LEVEL_OFFSET))
 
         # Return all the levels
         return levels
@@ -303,7 +308,7 @@ class Level(object):
             return '?'
         return TILES[index][1]
 
-    def __init__(self, level_bytes, level_title, startx=0, starty=0, init_motion=None, warp_zone=None):
+    def __init__(self, level_bytes, level_title, tiles_offset, startx=0, starty=0, init_motion=None, warp_zone=None):
         """
             Initializes.
         """
@@ -311,14 +316,16 @@ class Level(object):
         # Handle level data
         if len(level_bytes) == 1280:
             self.path_data = level_bytes[:256]
-            self.tiles = level_bytes[256:-24]
+            self.tiles = [ tile for tile in level_bytes[256:-24] ]
             self.width = 100
             self.height = 10
+            self.tiles_offset = tiles_offset + 256
         elif len(level_bytes) == 70:
             self.path_data = b''
-            self.tiles = level_bytes[:]
+            self.tiles = [ tile for tile in level_bytes[:] ]
             self.width = 10
             self.height = 7
+            self.tiles_offset = tiles_offset
         else:
             raise Exception('Invalid level length %d' % (len(level_bytes),))
 
@@ -331,48 +338,160 @@ class Level(object):
         # Save warp zone (might be None)
         self.warp_zone = warp_zone
         
-        # Save the text representation ahead-of-time
-        self.repr = self.title + ':\n\n' + '\n'.join([ ''.join([ Level.get_tile(tile) for tile in self.tiles[i:i+self.width] ]) for i in range(0, len(self.tiles), self.width) ])
-        if self.warp_zone is not None:
-            self.repr += '\n\n%s' % (self.warp_zone,)
-
     def __str__(self):
         """
             Returns a nice string-representation of the level.
         """
+        
+        # Returns the text representation
+        self_repr = self.title + ':\n\n' + '\n'.join([ ''.join([ Level.get_tile(tile) for tile in self.tiles[i:i+self.width] ]) for i in range(0, len(self.tiles), self.width) ])
+        if self.warp_zone is not None:
+            self_repr += '\n\n%s' % (self.warp_zone,)
+        return self_repr
 
-        # Return the text representation
-        return self.repr
+def choose_level(num_levels):
+    """
+        Chooses a level number.
+    """
+
+    # Present choice
+    num_level = input('Choose level number (0-%d): ' % (num_levels - 1,))
+    if num_level.isdigit() and int(num_level) >= 0 and int(num_level) < num_levels:
+        return int(num_level)
+    else:
+        raise Exception('Invalid level number: %s.' % (num_level,))
+
+def get_coord(coord_type, max_num):
+    """
+        Gets a coordinate.
+    """
+
+    # Get input
+    coord = input('Enter %s coordinate (0-%d): ' % (coord_type, max_num - 1))
+    if coord.isdigit() and int(coord) >= 0 and int(coord) < max_num:
+        return int(coord)
+    else:
+        raise Exception('Invalid %s coordinate: %s.' % (coord_type, coord))
 
 def main():
     """
         Main functionality.
     """
 
-    # Parse DAVE.EXE
-    with open('DAVE.EXE', 'rb') as f:
-        contents = f.read()
+    # Handle critical errors
+    try:
 
-    # Parse levels
-    levels = Level.parse(contents)
+        # Parse DAVE.EXE
+        with open(FILENAME, 'rb') as f:
+            bin_bytes = f.read()
+
+        # Parse levels
+        levels = Level.parse(bin_bytes)
+        if len(levels) == 0:
+            raise Exception('Error parsing levels.')
+
+        # Extract title and subtitle
+        titles = [ bin_bytes[TITLE_OFFSET:TITLE_OFFSET + TITLE_SIZE].decode(), bin_bytes[SUBTITLE_OFFSET:SUBTITLE_OFFSET + SUBTITLE_SIZE].decode() ]
+
+    except Exception as ex:
+        print('Fatal error: %s' % (ex,))
+        return
 
     # Handle menu
+    saved = True
     while True:
-        print('Loaded %d levels.' % (len(levels)))
-        choice = input('Choose a level to view (zero-based) or \'Q\' to quit: ')
-        if choice.isdigit():
-            level_num = int(choice)
-            if level_num < 0 or level_num >= len(levels):
-                print('Invalid level number')
+
+        # Handle all exceptions
+        try:
+
+            # Present header
+            print('Loaded %d levels.' % (len(levels)))
+            print('Current intro title: "%s".' % (titles[0],))
+            print('Current intro subtitle: "%s".' % (titles[1],))
+            if not saved:
+                print('You have UNSAVED edits.\n')
+            print('Menu:\n\t[V]iew a level.\n\t[E]dit a level.\n\tEdit intro [T]itle.\n\tEdit intro su[B]title.\n\t[S]ave pending changes.\n\t[Q]uit without saving.')
+            choice = input('> ').upper()
+           
+            # Handle title or subtitle changes
+            if choice == 'T' or choice == 'B':
+                title_index = 0 if choice == 'T' else 1
+                print('Current intro %s: "%s".' % ('title' if choice == 'T' else 'subtitle', titles[title_index]))
+                new_text = input('New %s (AT MOST %d characters): ' % ('title' if choice == 'T' else 'subtitle', len(titles[title_index])))
+                if len(new_text) > len(titles[title_index]):
+                    raise Exception('Length of new %s is too big (max=%d).' % ('title' if choice == 'T' else 'subtitle', len(titles[title_index])))
+                spaces =  len(titles[title_index]) - len(new_text)
+                for i in range(spaces // 2):
+                    new_text = ' ' + new_text + ' '
+                if spaces % 2 == 1:
+                    new_text += ' '
+                titles[title_index] = new_text
+                saved = False
+                clear_screen()
+                print('Changed %s successfully.' % ('title' if choice == 'T' else 'subtitle',))
                 continue
+
+            # Handle edit\view
+            if choice == 'V' or choice == 'E':
+                level_num = choose_level(len(levels))
+                clear_screen()
+                print(levels[int(level_num)])
+                print('\n\n')
+                if choice == 'E':
+                    x_coord = get_coord('X', levels[level_num].width)
+                    y_coord = get_coord('Y', levels[level_num].height)
+                    tile_index = levels[level_num].tiles[y_coord * levels[level_num].height+ x_coord]
+                    if tile_index >= len(TILES):
+                        raise Exception('Cannot edit unknown tile for level %d at position (%d, %d).' % (level_num, x_coord, y_coord))
+                    print('Current tile is %s.' % (TILES[tile_index][0],))
+                    print('Available tile types: %s' % (', '.join( [tile[0] for tile in TILES ])))
+                    new_tile = input('New tile type: ')
+                    matched_tiles = [ tile_index for tile_index in range(len(TILES)) if TILES[tile_index][0] == new_tile ]
+                    if len(matched_tiles) != 1:
+                        raise Exception('Invalid tile type: %s.' % (new_tile,))
+                    if TILES[matched_tiles[0]] != TILES[tile_index][0]:
+                        levels[level_num].tiles[y_coord * levels[level_num].width+ x_coord] = matched_tiles[0]
+                        saved = False
+                        clear_screen()
+                        print('Level %d patched successfully.' % (level_num,))
+                continue
+            
+            # Handle saving
+            if choice == 'S':
+                if saved:
+                    raise Exception('Nothing to save.')
+                choice = input('This will completely override file %s! Choose \'Y\' to do it or any key to cancel: ' % (FILENAME,)).upper()
+                if choice != 'Y':
+                    continue
+                new_bytes = bin_bytes[:]
+                for level in levels:
+                    new_bytes = new_bytes[:level.tiles_offset] + bytes(level.tiles) + new_bytes[level.tiles_offset + len(level.tiles):]
+                new_bytes = new_bytes[:TITLE_OFFSET] + titles[0].encode() + new_bytes[TITLE_OFFSET + TITLE_SIZE:]
+                new_bytes = new_bytes[:SUBTITLE_OFFSET] + titles[1].encode() + new_bytes[SUBTITLE_OFFSET + SUBTITLE_SIZE:]
+                with open(FILENAME, 'wb') as f:
+                    f.write(new_bytes)
+                clear_screen()
+                print('Written %d bytes to file %s successfully.' % (len(bin_bytes), FILENAME))
+                saved = True
+                continue
+
+            # Handle quitting
+            if choice == 'Q':
+                if not saved:
+                    choice = input('All your changed will be lost! Choose \'Y\' to quit or any key to cancel: ').upper()
+                    if choice != 'Y':
+                        continue
+                print('Quitting.\n')
+                break
+            
+            # Default handling
+            raise Exception('Invalid option: %s\n' % (choice,))
+
+        # Handle exceptions
+        except Exception as ex:
             clear_screen()
-            print(levels[level_num])
-            print('\n\n')
-        elif choice.upper() == 'Q':
-            print('Quitting.')
-            break
-        else:
-            print('Invalid option.\n')
+            print(ex)
+
 
 if __name__ == '__main__':
     main()
