@@ -264,6 +264,12 @@ if ((g_score_hi != 0) && ((1 < g_score_hi || (0x869f < g_score_lo)))) {
   }
 ```
 
+Some insights:
+1. The score is split to two `16`-bit values as I mentioned - `g_score_hi` and `g_score_lo`. Same thing for the next goal for more lives.
+2. The condition to try to increase the number of lives is that either the difference between low parts of the next goal and the current score are bigger than `0x4e20` (which is `20000` decimal) *or this condition*: `g_score_hi - g_next_goal_hi != (uint)(g_score_lo < g_next_goal_lo`.
+3. The maximum number of lives is `3` as can be seen by the check that increases the number of lives.
+4. The end shows how the total score cannot exceed `0x1869f`, which is `99999` decimal.
+
 
 
 ## Summary
