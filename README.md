@@ -270,7 +270,18 @@ Some insights:
 3. The maximum number of lives is `3` as can be seen by the check that increases the number of lives.
 4. The end shows how the total score cannot exceed `0x1869f`, which is `99999` decimal.
 
+Well, from debugging I can tell that after a score of `99999`, the next goal is `100000`, which means:
+- `g_next_goal_hi` is `1`.
+- `g_next_goal_lo` is `0x86a0`.
+- `g_score_lo` is `0x869f`.
+- `g_score_hi` is `1`.
 
+This means the condition I highlighted is fulfilled, always:
+1. `g_score_hi - g_next_goal_hi` is evaluated to `0`.
+2. `(uint)(g_score_lo < g_next_goal_lo)` is evaluated to `1`.
+
+Why does this happen when coming back from the menu? Well, it appears there are several conditions for triggering that function.  
+Most of the time that function is triggered by a collision with an object (which makes sense - think of a collision with a diamond) but also by returning from the menu, apparently, probably to redraw the score.
 
 ## Summary
 Of course that after all of that I had to add some funny changes, my parser is also capable of editing levels and text:
