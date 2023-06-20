@@ -240,7 +240,7 @@ g_maybe_levels_left = 10;
 g_is_warp_zone = 0;
 ```
 
-Debugging with the DosBox debugger helped clarify everything.
+Debugging with the the DosBox debugger helped clarify everything - the current score is indeed that `g_unknown1`.
 
 ## Summary
 Of course that after all of that I had to add some funny changes, my parser is also capable of editing levels and text:
