@@ -222,10 +222,25 @@ See all the `?` symbols? Those are out-of-bounds tiles (which explains the weird
 ## Further mysteries
 After the blogpost was published, I got some follow-up questions:
 - Apparently, if you go out-of-bounds on the *right* side of the screen in level 6, you get to the `warp zone` from level 8. Why does that happen?
-- If you get a score bigger than `99,999`, pressing `ESC` to go to the menu
+- If you get a score bigger than `99,999`, pressing `ESC` to go to the menu increases your life every time you pick something up. Neat!
 
 Well, the first one is easy - since the `warp zone` from level 8 is "combined" into level 6, the out-of-bounds simply loads the right side of the level, so you never truly stepped into a `warp zone`.
-The 2nd question requires further explanation which I am currently working on.
+The 2nd question requires further explanation. Armed with all the knowledge I had, I found an initialization function at offset `0x535a` from the file. Some parts of it made it quite clear (with some simple variable renaming):
+
+```c
+g_lives = 3;
+g_unknown1 = 0;
+g_unknown2 = 0;
+g_unknown3 = 0;
+g_unknown4 = 0;
+g_is_game_over = 0;
+g_current_level = 0;
+g_some_level_reference = 0;
+g_maybe_levels_left = 10;
+g_is_warp_zone = 0;
+```
+
+Debugging with the DosBox debugger helped clarify everything.
 
 ## Summary
 Of course that after all of that I had to add some funny changes, my parser is also capable of editing levels and text:
