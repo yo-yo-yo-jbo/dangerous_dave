@@ -219,6 +219,14 @@ XXXXXXXXXXXXXXXXX####WWWWW#####WWWWW######WWWWW########?M_ ? ?T? ??? Xg]??M| W W
 
 See all the `?` symbols? Those are out-of-bounds tiles (which explains the weird buggy-looking tiles at the bottom of that level).
 
+## Further mysteries
+After the blogpost was published, I got some follow-up questions:
+- Apparently, if you go out-of-bounds on the *right* side of the screen in level 6, you get to the `warp zone` from level 8. Why does that happen?
+- If you get a score bigger than `99,999`, pressing `ESC` to go to the menu
+
+Well, the first one is easy - since the `warp zone` from level 8 is "combined" into level 6, the out-of-bounds simply loads the right side of the level, so you never truly stepped into a `warp zone`.
+The 2nd question requires further explanation which I am currently working on.
+
 ## Summary
 Of course that after all of that I had to add some funny changes, my parser is also capable of editing levels and text:
 ![Modified](dave_hax.png)
