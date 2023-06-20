@@ -231,8 +231,8 @@ The 2nd question requires further explanation. Armed with all the knowledge I ha
 g_lives = 3;
 g_score_lo = 0;
 g_score_hi = 0;
-g_next_goal = 0;
-g_unknown4 = 0;
+g_next_goal_lo = 0;
+g_next_goal_hi = 0;
 g_is_game_over = 0;
 g_current_level = 0;
 g_some_level_reference = 0;
@@ -243,10 +243,28 @@ g_is_warp_zone = 0;
 Debugging with the the DosBox debugger helped clarify everything and helped me a lot with the renaming.  
 The score is composed of an entire `32`-bit value (implemented as two halves - each `16` bit).  
 Now that I know where the number of lives is saved, reverse-engineering is pretty quick - I suspected there is no memory corruption issue this time but just a logic bug, perhaps.  
-The conditions that increases the number of lives are:
-1. The difference between the current score and the "next goal" is more than `0x4e20` (which is `20000` points).
-2. The current number of lives is less than `3`.
-3. <TBC?>
+The decompiler shows something that looks quite interesting:
+
+```c
+if ((g_score_hi - g_next_goal_hi != (uint)(g_score_lo < g_next_goal_lo)) || (0x4e20 < g_score_lo - g_next_goal_lo)) {
+         // ...
+         g_next_goal_lo = g_score_lo;
+         if ((int)g_lives < 3) {
+                  UpdateSprite(g_lives * 0x10 + 0x100,0,*(int *)(g_some_base * g_some_offset * 2 + 0x216));
+                  g_lives = g_lives + 1;
+                  PlaySound(0xc);
+         }
+    }
+}
+
+// ...
+if ((g_score_hi != 0) && ((1 < g_score_hi || (0x869f < g_score_lo)))) {
+    g_score_lo = 0x869f;
+    g_score_hi = 1;
+  }
+```
+
+
 
 ## Summary
 Of course that after all of that I had to add some funny changes, my parser is also capable of editing levels and text:
