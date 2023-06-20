@@ -224,7 +224,8 @@ After the blogpost was published, I got some follow-up questions:
 - Apparently, if you go out-of-bounds on the *right* side of the screen in level 6, you get to the `warp zone` from level 8. Why does that happen?
 - If you get a score greater than `99,999`, pressing `ESC` to go to the menu increases your life every time you pick something up. Neat!
 
-Well, the first one is easy - since the `warp zone` from level 8 is "combined" into level 6, the out-of-bounds simply loads the right side of the level, so you never truly stepped into a `warp zone`.
+Well, the first one is easy - since the `warp zone` from level 8 is "baked" into level 6, the out-of-bounds simply loads the right side of the level, so you never truly stepped into a `warp zone`. The game does not even consider it out-of-bounds!
+
 The 2nd question requires further explanation. Armed with all the knowledge I had, I found an initialization function at offset `0x535a` from the file. Some parts of it made it quite clear (with some simple variable renaming):
 
 ```c
@@ -280,7 +281,7 @@ This means the condition I highlighted is fulfilled, always:
 1. `g_score_hi - g_next_goal_hi` is evaluated to `0`.
 2. `(uint)(g_score_lo < g_next_goal_lo)` is evaluated to `1`.
 
-Why does this happen when coming back from the menu? Well, it appears there are several conditions for triggering that function.  
+Why does that happen when coming back from the menu? Well, it appears there are several conditions for triggering that function.  
 Most of the time that function is triggered by a collision with an object (which makes sense - think of a collision with a diamond) but also by returning from the menu, apparently, probably to redraw the score.
 
 ## Summary
