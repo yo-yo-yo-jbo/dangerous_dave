@@ -246,7 +246,7 @@ Now that I know where the number of lives is saved, reverse-engineering is prett
 The conditions that increases the number of lives are:
 1. The difference between the current score and the "next goal" is more than `0x4e20` (which is `20000` points).
 2. The current number of lives is less than `3`.
-3. 
+3. <TBC?>
 
 ## Summary
 Of course that after all of that I had to add some funny changes, my parser is also capable of editing levels and text:
