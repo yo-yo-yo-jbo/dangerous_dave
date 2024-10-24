@@ -328,7 +328,7 @@ class Level(object):
 
         # Default representatiob of unknown tiles
         if len(TILES) <= index:
-            return '?'
+            return f'{WHITE_BACK}{BRIGHT}?{RESET_COLORS}'
         return TILES[index][1]
 
     def __init__(self, level_bytes, level_title, tiles_offset, startx=0, starty=0, init_motion=None, warp_zone=None):
