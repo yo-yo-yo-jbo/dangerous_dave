@@ -2,6 +2,7 @@
 import struct
 import os
 import colorama
+import base64
 
 # Fine-tunables
 NORMAL_LEVELS_OFFSET = 0x26E0A
@@ -46,6 +47,9 @@ WHITE_FORE = colorama.Fore.WHITE
 WHITE_BACK = colorama.Back.WHITE
 BLACK_FORE = colorama.Fore.BLACK
 BLACK_BACK = colorama.Back.BLACK
+
+# Logo
+LOGO = base64.b64decode(b'ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBfXywtLX4tLS5fCiAgICDilojilojilojilojilojilojilZcgIOKWiOKWiOKWiOKWiOKWiOKVlyDilojilojilZcgICDilojilojilZfilojilojilojilojilojilojilojilZcgICAg4paI4paI4paI4paI4paI4paI4paI4pWX4paI4paI4paI4paI4paI4paI4pWXIOKWiOKWiOKVl+KWiOKWiOKWiOKWiOKWiOKWiOKWiOKWiOKVlyDilojilojilojilojilojilojilZcg4paI4paI4paI4paI4paI4paI4pWXICAgICAgICAgICAgICwtOzs7OyAgIGA7OztgXAogICAg4paI4paI4pWU4pWQ4pWQ4paI4paI4pWX4paI4paI4pWU4pWQ4pWQ4paI4paI4pWX4paI4paI4pWRICAg4paI4paI4pWR4paI4paI4pWU4pWQ4pWQ4pWQ4pWQ4pWdICAgIOKWiOKWiOKVlOKVkOKVkOKVkOKVkOKVneKWiOKWiOKVlOKVkOKVkOKWiOKWiOKVl+KWiOKWiOKVkeKVmuKVkOKVkOKWiOKWiOKVlOKVkOKVkOKVneKWiOKWiOKVlOKVkOKVkOKVkOKWiOKWiOKVl+KWiOKWiOKVlOKVkOKVkOKWiOKWiOKVlyAgICAgICAgICAgLzs7Ozs7ICAgICAgOzs7O2BcCiAgICDilojilojilZEgIOKWiOKWiOKVkeKWiOKWiOKWiOKWiOKWiOKWiOKWiOKVkeKWiOKWiOKVkSAgIOKWiOKWiOKVkeKWiOKWiOKWiOKWiOKWiOKVlyAgICAgIOKWiOKWiOKWiOKWiOKWiOKVlyAg4paI4paI4pWRICDilojilojilZHilojilojilZEgICDilojilojilZEgICDilojilojilZEgICDilojilojilZHilojilojilojilojilojilojilZTilZ0gICAgICAgICAvOzs7Ozs7ICAgICBfX187O187IFwKICAgIOKWiOKWiOKVkSAg4paI4paI4pWR4paI4paI4pWU4pWQ4pWQ4paI4paI4pWR4pWa4paI4paI4pWXIOKWiOKWiOKVlOKVneKWiOKWiOKVlOKVkOKVkOKVnSAgICAgIOKWiOKWiOKVlOKVkOKVkOKVnSAg4paI4paI4pWRICDilojilojilZHilojilojilZEgICDilojilojilZEgICDilojilojilZEgICDilojilojilZHilojilojilZTilZDilZDilojilojilZcgICAgICAgIC87Ozs7OzsgICAgICBcXyB8O3w7OyB8CiAgICDilojilojilojilojilojilojilZTilZ3ilojilojilZEgIOKWiOKWiOKVkSDilZrilojilojilojilojilZTilZ0g4paI4paI4paI4paI4paI4paI4paI4pWXICAgIOKWiOKWiOKWiOKWiOKWiOKWiOKWiOKVl+KWiOKWiOKWiOKWiOKWiOKWiOKVlOKVneKWiOKWiOKVkSAgIOKWiOKWiOKVkSAgIOKVmuKWiOKWiOKWiOKWiOKWiOKWiOKVlOKVneKWiOKWiOKVkSAg4paI4paI4pWRICAgICAgICg7Ozs7OzsgICAgICAgX198fF98Ozs7fCAgIAogICAg4pWa4pWQ4pWQ4pWQ4pWQ4pWQ4pWdIOKVmuKVkOKVnSAg4pWa4pWQ4pWdICDilZrilZDilZDilZDilZ0gIOKVmuKVkOKVkOKVkOKVkOKVkOKVkOKVnSAgICDilZrilZDilZDilZDilZDilZDilZDilZ3ilZrilZDilZDilZDilZDilZDilZ0g4pWa4pWQ4pWdICAg4pWa4pWQ4pWdICAgIOKVmuKVkOKVkOKVkOKVkOKVkOKVnSDilZrilZDilZ0gIOKVmuKVkOKVnSAgICAgICAgYFxfLDs7ICAgICAgICAgICAgIDtfLGBcCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBgXF9fXywtLS0tLSd+fn5+fiAgICBgXAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXCAgICAgICAgICAgICAgICAgICApCiAgICAgICAgICAgIERhbmdlcm91cyBEYXZlICgxOTkwKSBlZGl0b3IgYnkgSm9uYXRoYW4gQmFyIE9yICgiSkJPIikgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYFwuX18gICAgICAgICAgICAgLycKICAgICAgICAgICAgICAgICAgICAgICAgaHR0cDovL3lvLXlvLXlvLWpiby5naXRodWIuaW8gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGB+fn5+LS0tLS0tfn4KCg==').decode()
 
 # Tile mappings
 TILES = [('empty', ' '),
@@ -217,6 +221,9 @@ def clear_screen():
         os.system('cls')
     else:
         os.system('clear')
+
+    # Print logo
+    print(f'{WHITE_FORE}{BRIGHT}{LOGO}{RESET_COLORS}')
 
 def pixel_to_tile_coord_x(p):
     """
@@ -421,6 +428,7 @@ def main():
         return
 
     # Handle menu
+    clear_screen()
     saved = True
     while True:
 
@@ -428,12 +436,12 @@ def main():
         try:
 
             # Present header
-            print('Loaded %d levels.' % (len(levels)))
-            print('Current intro title: "%s".' % (titles[0],))
-            print('Current intro subtitle: "%s".' % (titles[1],))
+            print(f'Loaded {BLUE_FORE}{BRIGHT}{len(levels)}{RESET_COLORS} levels.')
+            print(f'Current intro title: {BLUE_FORE}{BRIGHT}"{titles[0]}"{RESET_COLORS}.')
+            print(f'Current intro subtitle: {BLUE_FORE}{BRIGHT}"{titles[1]}"{RESET_COLORS}.')
             if not saved:
-                print('You have UNSAVED edits.\n')
-            print('Menu:\n\t[V]iew a level.\n\t[E]dit a level.\n\tEdit intro [T]itle.\n\tEdit intro su[B]title.\n\t[S]ave pending changes.\n\t[Q]uit without saving.')
+                print(f'You have {RED_FORE}UNSAVED{RESET_COLORS} edits.\n')
+            print(f'\n{YELLOW_FORE}== MENU =={RESET_COLORS}\n\t[{YELLOW_FORE}V{RESET_COLORS}]iew a level.\n\t[{YELLOW_FORE}E{RESET_COLORS}]dit a level.\n\tEdit intro [{YELLOW_FORE}T{RESET_COLORS}]itle.\n\tEdit intro su[{YELLOW_FORE}B{RESET_COLORS}]title.\n\t[{YELLOW_FORE}S{RESET_COLORS}]ave pending changes.\n\t[{YELLOW_FORE}Q{RESET_COLORS}]uit without saving.')
             choice = input('> ').upper()
            
             # Handle title or subtitle changes
