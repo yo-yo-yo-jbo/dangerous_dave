@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import struct
 import os
+import colorama
 
 # Fine-tunables
 NORMAL_LEVELS_OFFSET = 0x26E0A
@@ -24,27 +25,45 @@ TITLE_SIZE = 14
 SUBTITLE_OFFSET = 0x26451
 SUBTITLE_SIZE = 23
 
+# Initialize colors
+colorama.init()
+RESET_COLORS = colorama.Style.RESET_ALL
+DIM = colorama.Style.DIM
+BRIGHT = colorama.Style.BRIGHT
+BLUE_FORE = colorama.Fore.BLUE
+BLUE_BACK = colorama.Back.BLUE
+RED_BACK = colorama.Back.RED
+RED_FORE = colorama.Fore.RED 
+CYAN_FORE = colorama.Fore.CYAN
+CYAN_BACK = colorama.Back.CYAN
+GREEN_FORE = colorama.Fore.GREEN
+GREEN_BACK = colorama.Back.GREEN
+YELLOW_FORE = colorama.Fore.YELLOW
+YELLOW_BACK = colorama.Back.YELLOW
+MAGENTA_FORE = colorama.Fore.MAGENTA
+MAGENTA_BACK = colorama.Back.MAGENTA
+
 # Tile mappings
 TILES = [('empty', ' '),
          ('crack1', 'X'),
          ('door', 'G'),
          ('girder_block', '='),
-         ('jetpack', 'J'),
-         ('bluewall', '#'),
-         ('fire1', 'W'),
-         ('fire2', 'W'),
-         ('fire3', 'W'),
-         ('fire4', 'W'),
-         ('trophy1', 'T'),
-         ('trophy2', 'T'),
-         ('trophy3', 'T'),
-         ('trophy4', 'T'),
-         ('trophy5', 'T'),
+         ('jetpack', f'{GREEN_FORE}#{RESET_COLORS}'),
+         ('bluewall', f'{BLUE_BACK} {RESET_COLORS}'),
+         ('fire1', f'{RED_FORE}W{RESET_COLORS}'),
+         ('fire2', f'{RED_FORE}W{RESET_COLORS}'),
+         ('fire3', f'{RED_FORE}W{RESET_COLORS}'),
+         ('fire4', f'{RED_FORE}W{RESET_COLORS}'),
+         ('trophy1', f'{YELLOW_FORE}{BRIGHT}T{RESET_COLORS}'),
+         ('trophy2', f'{YELLOW_FORE}{BRIGHT}T{RESET_COLORS}'),
+         ('trophy3', f'{YELLOW_FORE}{BRIGHT}T{RESET_COLORS}'),
+         ('trophy4', f'{YELLOW_FORE}{BRIGHT}T{RESET_COLORS}'),
+         ('trophy5', f'{YELLOW_FORE}{BRIGHT}T{RESET_COLORS}'),
          ('pipe_horiz', '>'),
          ('pipe_vert', 'V'),
-         ('redwall', '#'),
+         ('redwall', f'{RED_BACK} {RESET_COLORS}'),
          ('crack2', 'X'),
-         ('bluetile', '%'),
+         ('bluetile', f'{BLUE_BACK}#{RESET_COLORS}'),
          ('gun', 'G'),
          ('diag1', '\\'),
          ('diag2', '/'),
@@ -59,32 +78,32 @@ TILES = [('empty', ' '),
          ('girder_horiz2', '-'),
          ('low_grass', '_'),
          ('trunk', '|'),
-         ('branch1', 'O'),
-         ('branch2', 'O'),
-         ('water1', 'o'),
-         ('water2', 'o'),
-         ('water3', 'o'),
-         ('water4', 'o'),
-         ('water5', 'o'),
+         ('branch1', f'{GREEN_FORE}O{RESET_COLORS}'),
+         ('branch2', f'{GREEN_FORE}O{RESET_COLORS}'),
+         ('water1', f'{CYAN_BACK} {RESET_COLORS}'),
+         ('water2', f'{CYAN_BACK} {RESET_COLORS}'),
+         ('water3', f'{CYAN_BACK} {RESET_COLORS}'),
+         ('water4', f'{CYAN_BACK} {RESET_COLORS}'),
+         ('water5', f'{CYAN_BACK} {RESET_COLORS}'),
          ('stars', '.'),
          ('moon', '.'),
-         ('branch3', 'O'),
-         ('branch4', 'O'),
-         ('branch5', 'O'),
-         ('branch6', 'O'),
-         ('diamond_blue', '$'),
-         ('purple_dot', '*'),
-         ('diamond_red', '$'),
-         ('crown', 'M'),
-         ('ring', 'Q'),
+         ('branch3', f'{GREEN_FORE}O{RESET_COLORS}'),
+         ('branch4', f'{GREEN_FORE}O{RESET_COLORS}'),
+         ('branch5', f'{GREEN_FORE}O{RESET_COLORS}'),
+         ('branch6', f'{GREEN_FORE}O{RESET_COLORS}'),
+         ('diamond_blue', f'{CYAN_FORE}{BRIGHT}*{RESET_COLORS}'),
+         ('purple_dot', f'{MAGENTA_FORE}*{RESET_COLORS}'),
+         ('diamond_red', f'{RED_FORE}{BRIGHT}*{RESET_COLORS}'),
+         ('crown', f'{YELLOW_FORE}{BRIGHT}M{RESET_COLORS}'),
+         ('ring', f'{YELLOW_FORE}{BRIGHT}O{RESET_COLORS}'),
          ('septer', '&'), 
-         ('dave1', 'D'),
-         ('dave2', 'D'),
-         ('dave3', 'D'),
-         ('dave4', 'D'),
-         ('dave5', 'D'),
-         ('dave6', 'D'),
-         ('dave7', 'D'),
+         ('dave1', f'{RED_FORE}{DIM}D{RESET_COLORS}'),
+         ('dave2', f'{RED_FORE}{DIM}D{RESET_COLORS}'),
+         ('dave3', f'{RED_FORE}{DIM}D{RESET_COLORS}'),
+         ('dave4', f'{RED_FORE}{DIM}D{RESET_COLORS}'),
+         ('dave5', f'{RED_FORE}{DIM}D{RESET_COLORS}'),
+         ('dave6', f'{RED_FORE}{DIM}D{RESET_COLORS}'),
+         ('dave7', f'{RED_FORE}{DIM}D{RESET_COLORS}'),
          ('shadow1', ' '),
          ('shadow2', ' '),
          ('shadow3', ' '),
@@ -92,22 +111,22 @@ TILES = [('empty', ' '),
          ('shadow5', ' '),
          ('shadow6', ' '),
          ('shadow7', ' '),
-         ('jump_right', 'D'),
-         ('jump_left', 'D'),
+         ('jump_right', f'{RED_FORE}{DIM}D{RESET_COLORS}'),
+         ('jump_left', f'{RED_FORE}{DIM}D{RESET_COLORS}'),
          ('shadow_right', ' '),
          ('shadow_left', ' '),
-         ('climb1', 'D'),
-         ('climb2', 'D'),
-         ('climb3', 'D'),
+         ('climb1', f'{RED_FORE}{DIM}D{RESET_COLORS}'),
+         ('climb2', f'{RED_FORE}{DIM}D{RESET_COLORS}'),
+         ('climb3', f'{RED_FORE}{DIM}D{RESET_COLORS}'),
          ('shadow_climb1', ' '),
          ('shadow_climb2', ' '),
          ('shadow_climb3', ' '),
-         ('jetpack_right1', 'D'),
-         ('jetpack_right2', 'D'),
-         ('jetpack_right3', 'D'),
-         ('jetpack_left1', 'D'),
-         ('jetpack_left2', 'D'),
-         ('jetpack_left3', 'D'),
+         ('jetpack_right1', f'{RED_FORE}{DIM}{GREEN_BACK}D{RESET_COLORS}'),
+         ('jetpack_right2', f'{RED_FORE}{DIM}{GREEN_BACK}D{RESET_COLORS}'),
+         ('jetpack_right3', f'{RED_FORE}{DIM}{GREEN_BACK}D{RESET_COLORS}'),
+         ('jetpack_left1', f'{RED_FORE}{DIM}{GREEN_BACK}D{RESET_COLORS}'),
+         ('jetpack_left2', f'{RED_FORE}{DIM}{GREEN_BACK}D{RESET_COLORS}'),
+         ('jetpack_left3', f'{RED_FORE}{DIM}{GREEN_BACK}D{RESET_COLORS}'),
          ('jetpack_shadow_right1', ' '),
          ('jetpack_shadow_right2', ' '),
          ('jetpack_shadow_right3', ' '),
