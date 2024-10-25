@@ -491,7 +491,7 @@ def main():
             if choice == 'S':
                 if saved:
                     raise Exception('Nothing to save.')
-                choice = input('This will completely override file %s! Choose \'Y\' to do it or any key to cancel: ' % (FILENAME,)).upper()
+                choice = input(f'This will completely override file %s! Choose \'{YELLOW_FORE}Y{RESET_COLORS}\' to do it or any key to cancel: ' % (FILENAME,)).upper()
                 if choice != 'Y':
                     continue
                 new_bytes = bin_bytes[:]
@@ -509,7 +509,7 @@ def main():
             # Handle quitting
             if choice == 'Q':
                 if not saved:
-                    choice = input('All your changed will be lost! Choose \'Y\' to quit or any key to cancel: ').upper()
+                    choice = input(f'All your changed will be lost! Choose \'{YELLOW_FORE}Y{RESET_COLORS}\' to quit or any key to cancel: ').upper()
                     if choice != 'Y':
                         continue
                 print('Quitting.\n')
