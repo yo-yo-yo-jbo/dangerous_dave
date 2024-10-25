@@ -284,6 +284,11 @@ This means the condition I highlighted is fulfilled, always:
 Why does that happen when coming back from the menu? Well, it appears there are several conditions for triggering that function.  
 Most of the time that function is triggered by a collision with an object (which makes sense - think of a collision with a diamond) but also by returning from the menu, apparently, probably to redraw the score.
 
+## Tooling
+After a long time, I've added some better tooling and nice colors for easy usage!  
+Run [dave_parse.py](dave_parse.py) as the level editor:
+![Tool](tool.png)
+
 ## Summary
 Of course that after all of that I had to add some funny changes, my parser is also capable of editing levels and text:
 ![Modified](dave_hax.png)
